@@ -34,7 +34,7 @@
     <hr />
 
     <!-- Comments Form -->
-    <div class="card my-4"  id="leave-a-comment">
+    <div class="card my-4" id="leave-a-comment">
         <h5 class="card-header">Leave a Comment:</h5>
         <div class="card-body">
             @if (Request.QueryString["commentSuccess"] == "True")
@@ -63,7 +63,7 @@
     </div>
 
     @foreach (var comment in Model.Post.Comments
-        .Where(x => x.State == CommentState.Approved && x.ParentId==null)
+        .Where(x => x.State == CommentState.Approved && x.ParentId == null)
         .OrderByDescending(x => x.CreationTime))
     {
         <!-- Single Comment -->
@@ -71,23 +71,34 @@
             <img class="d-flex mr-3 rounded-circle" src="@Url.ProfilePhoto(comment.Author.ProfilePhoto)" alt="" width="50" height="50">
             <div class="media-body">
                 <h5 class="mt-0">@comment.Author.DisplayName</h5>
-                @comment.Content
-            <a href="#" class="reply-button mb-2 d-inline-block" data-comment-id="@comment.Id">Reply</a>   
-            <div class="reply-form-wrapper"></div>
+                @comment.Content <br />
 
-                @foreach (var subcomment in comment.Children
-                    .Where(x => x.State == CommentState.Approved)
-                    .OrderBy(x => x.CreationTime))
+                @if (Request.IsAuthenticated)
                 {
-                    <!-- Single Comment -->
-                    <div class="media mb-4">
-                        <img class="d-flex mr-3 rounded-circle" src="@Url.ProfilePhoto(subcomment.Author.ProfilePhoto)" alt="" width="50" height="50">
-                        <div class="media-body">
-                            <h5 class="mt-0">@subcomment.Author.DisplayName</h5>
-                            @subcomment.Content
-                        </div>
-                    </div>
+                    <a href="#" class="reply-button small" data-comment-id="@comment.Id" new{@class="small"}>Reply</a>
                 }
+                else
+                {
+                    @Html.ActionLink("Reply", "Login", "Account", new { returnUrl = Request.Url.AbsolutePath }, null)
+                }
+
+                <div class="reply-form-wrapper"></div>
+
+                <div class="mt-1">
+                    @foreach (var subcomment in comment.Children
+                   .Where(x => x.State == CommentState.Approved)
+                   .OrderBy(x => x.CreationTime))
+                    {
+                        <!-- Single Comment -->
+                        <div class="media mb-4">
+                            <img class="d-flex mr-3 rounded-circle" src="@Url.ProfilePhoto(subcomment.Author.ProfilePhoto)" alt="" width="50" height="50">
+                            <div class="media-body">
+                                <h5 class="mt-0">@subcomment.Author.DisplayName</h5>
+                                @subcomment.Content
+                            </div>
+                        </div>
+                    }
+                </div>
             </div>
         </div>
     }
@@ -103,13 +114,27 @@
                 window.scrollTo(0, $("#leave-a-comment").offset().top - 65);
             }
         }, 100);
+
         $(".reply-button").click(function (event) {
-            var commentId=$(this).data("comment-id")
             event.preventDefault();
+
+            // zaten tıklanmışsa kapat
+            if ($(this).next(".reply-form-wrapper").html()) {
+                $(this).next(".reply-form-wrapper").html("");
+                return;
+            }
+
+            var commentId = $(this).data("comment-id");
             var frm = $("#leave-a-comment form").clone();
+                        // change style of the clone
+            frm.addClass("d-flex justify-content-end");
+            frm.find(".form-group").addClass("flex-fill mb-0");
+            frm.find("button").addClass("btn-sm align-self-end ml-1");
+            frm.find("textarea").attr("rows","2");
+
             frm.find("#ParentId").val(commentId);
             $(".reply-form-wrapper").html("");
             $(this).next(".reply-form-wrapper").html(frm);
-        })
+        });
     </script>
 }

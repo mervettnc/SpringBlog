@@ -79,6 +79,11 @@ namespace SpringBlog.Models
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        [Required]
+        [Display(Name = "Display Name")]
+        [StringLength(30)]
+        public string DisplayName { get; set; }
     }
 
     public class ResetPasswordViewModel
