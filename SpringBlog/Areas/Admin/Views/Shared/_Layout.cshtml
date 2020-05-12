@@ -205,6 +205,15 @@
                                 </li>
                             </ul>
                         </li>
+                        <li class="nav-item has-treeview menu-open">
+                            @MenuLink("Comments", "", "Comments", "fas fa-comments", true)
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    @MenuLink("List Comments", "Index", "Comments", "fas fa-list")
+                                </li>
+
+                            </ul>
+                        </li>
 
 
                     </ul>
@@ -271,6 +280,7 @@
     <script src="~/Areas/Admin/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
     <script src="~/Areas/Admin/plugins/toastr/toastr.min.js"></script>
     <script src="~/Areas/Admin/plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
+    <script src="~/Areas/Admin/plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
     <!-- AdminLTE App -->
     <script src="~/Areas/Admin/dist/js/adminlte.min.js"></script>
     <!-- AdminLTE for demo purposes -->
@@ -278,13 +288,13 @@
     <!-- Summernote -->
     <script src="~/Areas/Admin/plugins/summernote/summernote-bs4.min.js"></script>
     <!-- Slug js -->
-<script src="~/Areas/Admin/dist/js/slug.js"></script>
+    <script src="~/Areas/Admin/dist/js/slug.js"></script>
 
-<script>
+    <script>
     slug.init("@Url.Action("ConvertToSlug","Slug")");
-</script>
+    </script>
 
-<!-- Data-Table custom js -->
+    <!-- Data-Table custom js -->
     <script src="~/Areas/Admin/dist/js/admin.custom.js"></script>
     @RenderSection("scripts", false)
     <script>
