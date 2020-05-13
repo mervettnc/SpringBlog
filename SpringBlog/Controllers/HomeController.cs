@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Net.Mail;
 using System.Web;
@@ -60,6 +61,7 @@ namespace SpringBlog.Controllers
         public ActionResult Contact()
         {
             ViewBag.Message = "Your contact page.";
+           
 
             return View();
         }
